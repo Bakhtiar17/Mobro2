@@ -8,7 +8,8 @@ import org.mobro4046.mobro2.model.Harian
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainAdapter: RecyclerView.Adapter<MainAdapter.ViewHolder>(){
+class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+
     private val formatter = SimpleDateFormat("dd MMMM", Locale("ID", "id"))
     private val data = mutableListOf<Harian>()
 
@@ -22,28 +23,31 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.ViewHolder>(){
         return Date(data[position].key)
     }
 
+    override fun getItemCount(): Int {
+        return data.size
+    }
+
+    override fun onBindViewHolder(holder: MainAdapter.ViewHolder, position: Int) {
+        holder.bind(data[data.size - position - 1])
+    }
+
     inner class ViewHolder(
         private val binding: ItemMainBinding
-    ): RecyclerView.ViewHolder(binding.root){
+    ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(harian: Harian) = with(binding) {
             tanggalTextView.text = formatter.format(Date(harian.key))
             positifTextView.text = itemView.context.getString(
-                R.string.x_orang, harian.jumlahPositif.value
+                R.string.x_orang,
+                harian.jumlahPositif.value
             )
         }
+
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainAdapter.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemMainBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(data[data.size - position- 1])
-    }
-
-    override fun getItemCount(): Int {
-        return data.size
     }
 }

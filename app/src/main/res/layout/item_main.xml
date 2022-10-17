@@ -6,20 +6,19 @@
     android:gravity="center_vertical"
     android:padding="16dp">
 
-
     <TextView
         android:id="@+id/tanggalTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center_vertical"
         android:textSize="18sp"
-        tools:text="3 Oktober" />
+        tools:text="8 September" />
 
     <TextView
         android:id="@+id/positifTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        tools:text="123 orang" />
+        tools:text="9 orang" />
+
 </LinearLayout>

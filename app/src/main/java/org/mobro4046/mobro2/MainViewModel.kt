@@ -9,15 +9,31 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.mobro4046.mobro2.model.Harian
 import com.github.mikephil.charting.data.Entry
+import kotlinx.coroutines.withContext
 
 class MainViewModel : ViewModel() {
+
     private val data = MutableLiveData<List<Harian>>()
     private val status = MutableLiveData<ApiStatus>()
     private val entries = MutableLiveData<List<Entry>>()
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            requestData()
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                requestData()
+            }
+        }
+    }
+
+    private suspend fun requestData() {
+        try {
+            status.postValue(ApiStatus.Loading)
+            val result = Covid19Api.service.getData()
+            data.postValue(result.update.harian)
+            entries.postValue(getEntry(result.update.harian))
+            status.postValue(ApiStatus.Success)
+        } catch (e: Exception) {
+            status.postValue(ApiStatus.Failed)
         }
     }
 
@@ -31,22 +47,7 @@ class MainViewModel : ViewModel() {
         return result
     }
 
-    private suspend fun requestData() {
-        try {
-            status.postValue(ApiStatus.LOADING)
-            val result = Covid19Api.service.getData()
-            data.postValue(result.update.harian)
-            entries.postValue(getEntry(result.update.harian))
-            status.postValue(ApiStatus.SUCCESS)
-        }
-        catch (e: Exception) {
-            status.postValue(ApiStatus.FAILED)
-        }
-    }
-
     fun getData(): LiveData<List<Harian>> = data
-
     fun getStatus(): LiveData<ApiStatus> = status
-
     fun getEntries(): LiveData<List<Entry>> = entries
 }

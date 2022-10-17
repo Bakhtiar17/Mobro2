@@ -1,7 +1,11 @@
 package org.mobro4046.mobro2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -16,43 +20,29 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.android.gms.maps.GoogleMap
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var myAdapter: MainAdapter
-
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
-    }
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var myAdapter: MainAdapter
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        with(binding.chart) {
-            setNoDataText(getString(R.string.belum_ada_data))
-            description.text = ""
-            xAxis.position = XAxis.XAxisPosition.BOTTOM
-            axisLeft.axisMinimum = 0f
-            axisRight.isEnabled = false
-
-            legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-            legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-            legend.setDrawInside(false)
-        }
-
-
-
         myAdapter = MainAdapter()
-        with(binding.recyclerView){
+        with(binding.recyclerView) {
             addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
             setHasFixedSize(true)
             adapter = myAdapter
         }
-
         val formatter = SimpleDateFormat("dd MMM", Locale("ID", "id"))
         binding.chart.xAxis.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
@@ -62,17 +52,31 @@ class MainActivity : AppCompatActivity() {
                     formatter.format(myAdapter.getDate(pos)) else ""
             }
         }
-
-        binding.chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+        binding.chart.setOnChartValueSelectedListener(object :
+            OnChartValueSelectedListener {
             override fun onValueSelected(entry: Entry?, highlight: Highlight) {
                 val pos = myAdapter.itemCount - highlight.x.toInt()
                 binding.recyclerView.scrollToPosition(pos)
             }
+
             override fun onNothingSelected() {}
         })
 
+
+        with(binding.chart) {
+            setNoDataText(getString(R.string.belum_ada_data))
+            description.text = ""
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            axisLeft.axisMinimum = 0f
+            axisRight.isEnabled = false
+            legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+            legend.setDrawInside(false)
+        }
+
+
         viewModel.getData().observe(this, { myAdapter.setData(it) })
-        viewModel.getStatus().observe(this, {updateProgress(it)})
+        viewModel.getStatus().observe(this, { updateProgress(it) })
         viewModel.getEntries().observe(this, { updateChart(it) })
     }
 
@@ -86,18 +90,32 @@ class MainActivity : AppCompatActivity() {
         binding.chart.invalidate()
     }
 
-    private fun updateProgress(status: ApiStatus){
-        when (status){
-            ApiStatus.LOADING -> {
+    private fun updateProgress(status: ApiStatus) {
+        when (status) {
+            ApiStatus.Loading -> {
                 binding.progressBar.visibility = View.VISIBLE
             }
-            ApiStatus.SUCCESS -> {
+            ApiStatus.Success -> {
                 binding.progressBar.visibility = View.GONE
             }
-            ApiStatus.FAILED -> {
+            ApiStatus.Failed -> {
                 binding.progressBar.visibility = View.GONE
                 binding.errorTextView.visibility = View.VISIBLE
             }
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_maps) {
+            startActivity(Intent(this, MapsActivity::class.java))
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }
