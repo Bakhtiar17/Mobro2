@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "126913581346",
+    "project_id": "mobro2-8084e",
+    "storage_bucket": "mobro2-8084e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126913581346:android:97d0d6879d6219a748d57b",
+        "android_client_info": {
+          "package_name": "org.mobro4046.mobro2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126913581346-3ochong5jcvk6nell3rks7n6no9iean2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.mobro4046.mobro2",
+            "certificate_hash": "23803f5624944236abbeac473ca06b7e9d64488b"
+          }
+        },
+        {
+          "client_id": "126913581346-u1pkoolt8g70ef33oq104gupihf9uoil.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7a2_OsApY6ydI3pxQ37Qt5AvsEhFWcU8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126913581346-u1pkoolt8g70ef33oq104gupihf9uoil.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
