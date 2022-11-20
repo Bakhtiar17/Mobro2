@@ -2,7 +2,6 @@ package org.mobro4046.mobro2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity(), MainDialog.DialogListener {
     }
 
     private val viewModel: MainViewModel by lazy {
-        val dataSource = MahasiswaDb.getInstance(this).dao
+        val dataSource = MahasiswaDb.getInstance().dao
         val factory = MainViewModelFactory(dataSource)
         ViewModelProvider(this, factory).get(MainViewModel::class.java)
     }
