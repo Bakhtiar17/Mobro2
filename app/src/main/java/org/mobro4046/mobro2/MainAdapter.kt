@@ -56,7 +56,7 @@ class MainAdapter(
         fun onLongClick(position: Int): Boolean
     }
 
-    private val selectionIds = ArrayList<Int>()
+    private val selectionIds = ArrayList<String>()
     fun toggleSelection(pos: Int) {
         val id = getItem(pos).id
         if (selectionIds.contains(id))
@@ -65,7 +65,7 @@ class MainAdapter(
             selectionIds.add(id)
         notifyDataSetChanged()
     }
-    fun getSelection(): List<Int> {
+    fun getSelection(): List<String> {
         return selectionIds
     }
     fun resetSelection() {
