@@ -1,4 +1,4 @@
-package org.mobro4046.mobro2
+package org.mobro4046.mobro2.ui.detail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,8 @@ import org.mobro4046.mobro2.data.Mahasiswa
 import org.mobro4046.mobro2.databinding.ItemMainBinding
 
 class MainAdapter(
-    private val handler: ClickHandler) : ListAdapter<Mahasiswa, MainAdapter.ViewHolder>(DIFF_CALLBACK) {
+    private val handler: ClickHandler
+) : ListAdapter<Mahasiswa, MainAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Mahasiswa>() {

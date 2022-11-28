@@ -11,4 +11,7 @@
     <string name="hapus">Hapus</string>
     <string name="mahasiswa_klik">%1$s diklik!</string>
     <string name="pesan_hapus">Hapus mahasiswa terpilih?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tidak_ada_data">tidak ada data</string>
 </resources>

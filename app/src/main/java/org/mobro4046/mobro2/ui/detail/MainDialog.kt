@@ -1,19 +1,32 @@
-package org.mobro4046.mobro2
+package org.mobro4046.mobro2.ui.detail
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
+import org.mobro4046.mobro2.R
 import org.mobro4046.mobro2.data.Mahasiswa
+import org.mobro4046.mobro2.data.MahasiswaDb
 import org.mobro4046.mobro2.databinding.DialogMainBinding
 
 class MainDialog : DialogFragment() {
     private lateinit var binding: DialogMainBinding
+
+    private val viewModel: MainViewModel by lazy {
+        val dataSource = MahasiswaDb.getInstance(requireContext()).dao
+        val factory = MainViewModelFactory(dataSource)
+        ViewModelProvider(requireActivity(), factory)
+            .get(MainViewModel::class.java)
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val args = MainDialogArgs.fromBundle(requireArguments())
+        Log.d("KELAS", args.kelas)
         val inflater = LayoutInflater.from(requireContext())
         binding = DialogMainBinding.inflate(inflater, null, false)
         val builder = AlertDialog.Builder(requireContext()).apply {
@@ -21,16 +34,13 @@ class MainDialog : DialogFragment() {
             setView(binding.root)
             setPositiveButton(R.string.simpan) { _, _ ->
                 val mahasiswa = getData() ?: return@setPositiveButton
-                val listener = requireActivity() as DialogListener
-                listener.processDialog(mahasiswa)
+                viewModel.insertData(mahasiswa)
             }
             setNegativeButton(R.string.batal) { _, _ -> dismiss() }
         }
         return builder.create()
     }
-    interface DialogListener {
-        fun processDialog(mahasiswa: Mahasiswa)
-    }
+
 
     private fun getData(): Mahasiswa? {
         if (binding.nimEditText.text.isEmpty()) {

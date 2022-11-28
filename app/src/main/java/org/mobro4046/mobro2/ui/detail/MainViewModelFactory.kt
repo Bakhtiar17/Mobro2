@@ -1,4 +1,4 @@
-package org.mobro4046.mobro2
+package org.mobro4046.mobro2.ui.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
